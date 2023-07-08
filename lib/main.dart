@@ -18,20 +18,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blueGrey[900],
+        scaffoldBackgroundColor: Colors.grey[200],
       ),
-      home: NavigationScreen(
-        currentIndex: 3,
+      home: const NavigationScreen(
+        initialIndex: 3,
       ),
     );
   }
-}
-
-class NavigationScreen extends StatefulWidget {
-  NavigationScreen({required this.currentIndex});
-  int currentIndex;
-  @override
-  State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
 const List<Widget> screens = [
@@ -41,30 +35,57 @@ const List<Widget> screens = [
   ProfilePage()
 ];
 
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({required this.initialIndex});
+
+  final int initialIndex;
+
+  @override
+  State<NavigationScreen> createState() => _NavigationScreenState();
+}
+
 class _NavigationScreenState extends State<NavigationScreen> {
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: widget.currentIndex,
+        index: _currentIndex,
         children: screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.deepPurpleAccent,
-        currentIndex: widget.currentIndex,
+        backgroundColor: Colors.grey[200],
+        unselectedItemColor: Colors.grey[700],
+        selectedItemColor: Colors.blueGrey[900],
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            widget.currentIndex = index;
+            _currentIndex = index;
           });
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: "Progress"),
-          BottomNavigationBarItem(icon: Icon(Icons.timeline), label: "Habits"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
+            icon: Icon(Icons.calendar_today),
+            label: "Progress",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timeline),
+            label: "Habits",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
         ],
       ),
     );
