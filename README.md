@@ -1,4 +1,4 @@
-# habit_speed_code
+# habits app
 
 A new Flutter project.
 
